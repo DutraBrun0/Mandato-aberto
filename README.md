@@ -16,8 +16,8 @@ Tratamento de deputados não encontrados.
 Tratamento de erros na comunicação com a API.
 Interface responsiva para computadores e celulares.
 Tecnologias utilizadas
-HTML5
-CSS3
+HTML
+CSS
 JavaScript
 Fetch API
 API de Dados Abertos da Câmara dos Deputados
@@ -34,11 +34,11 @@ Como executar
 
 Clone o repositório:
 
-git clone https://github.com/DutraBrun0/deputados.git
+git clone https://github.com/DutraBrun0/Mandato-aberto.git
 
 Entre na pasta do projeto:
 
-cd deputados
+cd Mandato-aberto
 
 Abra a pasta no Visual Studio Code:
 
