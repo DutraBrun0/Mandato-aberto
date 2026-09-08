@@ -1,6 +1,8 @@
 const formBusca = document.getElementById("formBusca");
 const inputNome = document.getElementById("inputNome");
 const mensagem = document.getElementById("mensagem");
+const botaoPesquisar = document.getElementById("botaoPesquisar");
+const painelDeputado = document.getElementById("painelDeputado");
 
 formBusca.addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -13,7 +15,8 @@ formBusca.addEventListener("submit", async function (event) {
     return;
   }
 
-  mensagem.textContent = "Buscando deputado...";
+  mensagem.textContent = "Consultando dados públicos...";
+  botaoPesquisar.disabled = true;
   limparDados();
 
   const url =
@@ -31,11 +34,16 @@ formBusca.addEventListener("submit", async function (event) {
     const data = await response.json();
 
     if (!data.dados || data.dados.length === 0) {
-      mensagem.textContent = "Deputado não encontrado.";
+      mensagem.textContent = "Nenhum deputado foi encontrado.";
       return;
     }
 
-    const deputado = data.dados[0];
+    const nomeMinusculo = nomePesquisado.toLowerCase();
+
+    const deputado =
+      data.dados.find(function (item) {
+        return item.nome.toLowerCase() === nomeMinusculo;
+      }) || data.dados[0];
 
     const urlDetalhes =
       `https://dadosabertos.camara.leg.br/api/v2/deputados/${deputado.id}`;
@@ -52,13 +60,13 @@ formBusca.addEventListener("submit", async function (event) {
     const detalhes = detalhesData.dados;
     const ultimoStatus = detalhes.ultimoStatus;
 
-    document.getElementById("nome").value =
-      detalhes.nomeCivil || "Não informado";
+    document.getElementById("nome").textContent =
+      detalhes.nomeCivil || ultimoStatus.nome || "Não informado";
 
-    document.getElementById("partido").value =
+    document.getElementById("partido").textContent =
       ultimoStatus.siglaPartido || "Não informado";
 
-    document.getElementById("uf").value =
+    document.getElementById("uf").textContent =
       ultimoStatus.siglaUf || "Não informado";
 
     const email =
@@ -67,40 +75,50 @@ formBusca.addEventListener("submit", async function (event) {
       deputado.email ||
       "Não informado";
 
-    document.getElementById("email").value = email;
+    const campoEmail = document.getElementById("email");
 
-    const foto = ultimoStatus.urlFoto;
+    campoEmail.textContent = email;
 
-    if (foto) {
+    if (email !== "Não informado") {
+      campoEmail.href = `mailto:${email}`;
+    } else {
+      campoEmail.removeAttribute("href");
+    }
+
+    if (ultimoStatus.urlFoto) {
       document.getElementById("fotoDeputado").innerHTML = `
         <img
-          src="${foto}"
-          alt="Foto de ${detalhes.nomeCivil}"
-          class="img-thumbnail"
-          width="150"
+          src="${ultimoStatus.urlFoto}"
+          alt="Foto de ${ultimoStatus.nome || detalhes.nomeCivil}"
         >
       `;
     }
 
+    painelDeputado.classList.remove("oculto");
+
     if (data.dados.length > 1) {
       mensagem.textContent =
-        `${data.dados.length} resultados encontrados. Exibindo o primeiro.`;
+        `${data.dados.length} resultados encontrados. Exibindo o mais próximo.`;
     } else {
-      mensagem.textContent = "Deputado encontrado.";
+      mensagem.textContent = "Informações encontradas.";
     }
 
   } catch (error) {
     console.error("Erro ao buscar deputado:", error);
 
     mensagem.textContent =
-      "Não foi possível realizar a consulta. Tente novamente.";
+      "Não foi possível acessar os dados neste momento.";
+  } finally {
+    botaoPesquisar.disabled = false;
   }
 });
 
 function limparDados() {
-  document.getElementById("nome").value = "";
-  document.getElementById("partido").value = "";
-  document.getElementById("uf").value = "";
-  document.getElementById("email").value = "";
+  painelDeputado.classList.add("oculto");
+
+  document.getElementById("nome").textContent = "";
+  document.getElementById("partido").textContent = "";
+  document.getElementById("uf").textContent = "";
+  document.getElementById("email").textContent = "";
   document.getElementById("fotoDeputado").innerHTML = "";
 }
