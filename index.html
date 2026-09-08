@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mandato Aberto</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main class="pagina">
+
+    <header class="topo">
+
+      <div class="marca">
+
+        <div class="marca-simbolo">
+        
+        </div>
+
+        <div>
+          <p class="selo">Informação pública</p>
+          <h1>Mandato Aberto</h1>
+        </div>
+
+      </div>
+
+      <p class="apresentacao">
+        Consulte informações públicas sobre deputados federais
+        de forma rápida e direta.
+      </p>
+
+    </header>
+
+    <section class="consulta">
+
+      <form id="formBusca">
+
+        <label for="inputNome">
+          Quem você deseja consultar?
+        </label>
+
+        <div class="grupo-busca">
+
+          <input
+            type="text"
+            id="inputNome"
+            placeholder="Digite o nome do deputado"
+            minlength="3"
+            autocomplete="off"
+            required
+          >
+
+          <button id="botaoPesquisar" type="submit">
+            Pesquisar
+          </button>
+
+        </div>
+
+      </form>
+
+      <p
+        id="mensagem"
+        class="mensagem"
+        aria-live="polite"
+      ></p>
+
+    </section>
+
+    <section id="painelDeputado" class="perfil oculto">
+
+      <div class="area-foto">
+
+        <div id="fotoDeputado" class="foto-deputado"></div>
+
+        <span class="origem-dados">
+          Dados da Câmara dos Deputados
+        </span>
+
+      </div>
+
+      <div class="informacoes">
+
+        <p class="titulo-secao">
+          Perfil parlamentar
+        </p>
+
+        <h2 id="nome">Nome do deputado</h2>
+
+        <div class="linha-destaque"></div>
+
+        <dl class="grade-informacoes">
+
+          <div class="informacao">
+            <dt>Partido</dt>
+            <dd id="partido">—</dd>
+          </div>
+
+          <div class="informacao">
+            <dt>Estado</dt>
+            <dd id="uf">—</dd>
+          </div>
+
+          <div class="informacao informacao-email">
+            <dt>E-mail institucional</dt>
+            <dd>
+              <a id="email">—</a>
+            </dd>
+          </div>
+
+        </dl>
+
+      </div>
+
+    </section>
+
+    <footer>
+      Projeto independente desenvolvido com dados públicos.
+    </footer>
+
+  </main>
+
+  <script src="script1.js"></script>
+
+</body>
+
+</html>
